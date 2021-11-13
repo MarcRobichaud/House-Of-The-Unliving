@@ -1,4 +1,13 @@
 using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public enum EnemyType
+{
+    NormalZombie,
+    TankZombie,
+    BreakDancerZombie
+}
 
 public class EnemyManager
 {
@@ -18,10 +27,25 @@ public class EnemyManager
     private EnemyManager() { }
     #endregion
 
+    private HashSet<Enemy> enemies = new HashSet<Enemy>();
+
     public void Init()
-    { 
+    {
+        foreach (var enemy in enemies)
+            enemy.Init();
     }
 
-    private void CreateEnemy()
-    { }
+    public void Refresh()
+    {
+        foreach (var enemy in enemies)
+            enemy.Refresh();
+    }
+
+    public void CreateEnemy(EnemyType enemyType, Vector3 spawnPoint)
+    {
+        Enemy enemy = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/" + enemyType)).GetComponent<Enemy>();
+        enemy.transform.position = spawnPoint;
+
+        enemies.Add(enemy);
+    }
 }

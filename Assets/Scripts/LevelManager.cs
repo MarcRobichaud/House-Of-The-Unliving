@@ -20,7 +20,7 @@ public class LevelManager
 
     private Level level;
 
-    public Vector3 NextCheckPoint => level.CheckPoint;
+    public Vector3 NextCheckPoint => level.NextCheckPoint;
     public Vector3 SpawnPoint => level.SpawnPoint.position;
     public void CheckPointReached() => level.CheckPointReached();
 

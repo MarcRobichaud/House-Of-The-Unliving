@@ -13,12 +13,14 @@ public class PlayerManager
             return instance;
         }
     }
-    #endregion
+    
     private static PlayerManager instance;
 
     private PlayerManager() { }
-
+    #endregion
     private Player player;
+
+    public Vector3 PlayerPosition => player.transform.position;
 
     public void Init()
     {
