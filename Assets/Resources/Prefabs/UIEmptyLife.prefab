@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6782282307836826297}
   - component: {fileID: 1313836954391778637}
   m_Layer: 5
-  m_Name: UILife
+  m_Name: UIEmptyLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: e74631ec8f46aa34b9f7daedd33bb748, type: 3}
+  m_Texture: {fileID: 2800000, guid: 115d6cfa589dcce46b77c4b9363166ca, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
