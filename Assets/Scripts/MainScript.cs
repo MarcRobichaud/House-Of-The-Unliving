@@ -12,6 +12,11 @@ public class MainScript : MonoBehaviour
         UIManager.Instance.Init();
     }
 
+    private void FixedUpdate()
+    {
+        EnemyManager.Instance.PhysicRefresh();
+    }
+
     private void Update()
     {
         PlayerManager.Instance.Refresh();

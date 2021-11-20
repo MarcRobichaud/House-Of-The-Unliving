@@ -4,15 +4,18 @@ using UnityEngine;
 enum PlayerState
 {
     Moving,
-    Shooting
+    Shooting,
+    Waiting,
+    Dead
 }
 
 public class Player : MonoBehaviour
 {
     private float timeStarted;
-    private float length = 20;
+    private float waitingLength = 2;
     private PlayerState playerState;
     private Vector3 movement;
+    private bool isDead = false;
 
     public PlayerStats stats;
 
@@ -32,6 +35,12 @@ public class Player : MonoBehaviour
                 break;
             case PlayerState.Shooting:
                 Shooting();
+                break;
+            case PlayerState.Waiting:
+                Waiting();
+                break;
+            case PlayerState.Dead:
+                Dead();
                 break;
             default:
                 break;
@@ -69,5 +78,34 @@ public class Player : MonoBehaviour
             stats.ammo--;
             BulletManager.Instance.Shoot(transform.forward);
         }
+    }
+
+    public void StartWaiting()
+    {
+        timeStarted = Time.time;
+        playerState = PlayerState.Waiting;
+    }
+
+    private void Waiting()
+    {
+        if (Time.time > timeStarted + waitingLength)
+            StartMoving();
+    }
+
+    private void Dead()
+    {
+        if (!isDead)
+        {
+            isDead = !isDead;
+            UIManager.Instance.ActivateDeathScreen();
+        }
+    }
+
+    public void Hit()
+    {
+        stats.hp--;
+
+        if (stats.hp <= 0)
+            playerState = PlayerState.Dead;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager
@@ -37,6 +38,7 @@ public class UIManager
     RectTransform emptyAmmoPanel;
     RectTransform lifePanel;
     RectTransform emptyLifePanel;
+    Button deathScreen;
 
     Vector2 ammoMinAnchor = new Vector2(0.75f, 0.05f);
     Vector2 ammoMaxAnchor = new Vector2(1, 0.15f);
@@ -115,5 +117,16 @@ public class UIManager
         {
             list[i].gameObject.SetActive(true);
         }
+    }
+
+    public void ActivateDeathScreen()
+    {
+        deathScreen = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UIDeathScreen"), canvas.transform).GetComponentInChildren<Button>();
+        deathScreen.onClick.AddListener(Restart);
+    }
+
+    private void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

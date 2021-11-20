@@ -43,7 +43,7 @@ public class Bullet : MonoBehaviour
                 if (enemyHit == null)
                     enemyHit = hit.transform.GetComponentInParent<Enemy>();
             }
-            EnemyManager.Instance.hit(enemyHit, headShot);
+            EnemyManager.Instance.Hit(enemyHit, headShot);
         }
     }
 }

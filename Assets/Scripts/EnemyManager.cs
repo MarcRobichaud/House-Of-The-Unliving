@@ -58,7 +58,10 @@ public class EnemyManager
             timeStarted = Time.time;
             enemyToSpawn--;
         }
+    }
 
+    public void PhysicRefresh()
+    {
         foreach (var enemy in enemies)
             enemy.Refresh();
     }
@@ -80,7 +83,7 @@ public class EnemyManager
         timeStarted = Time.time;
     }
 
-    public void hit(Enemy enemy, bool headShot)
+    public void Hit(Enemy enemy, bool headShot)
     {
         if (!headShot)
             enemy.stats.hp--;
@@ -93,12 +96,12 @@ public class EnemyManager
     {
         enemyLeft--;
         enemies.Remove(enemy);
-        GameObject.Destroy(enemy.gameObject);
+        enemy.Die();
 
         if (enemyLeft <= 0)
         {
             LevelManager.Instance.ChangeCheckPoint();
-            PlayerManager.Instance.StartMoving();
+            PlayerManager.Instance.MoveToNextCheckPoint();
         }
     }
 }

@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: cdf71cc53d4d64a439b0d9fe461ce79f
+guid: d763010802e2c5146b4b459b89e2d633
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Breakdance Swipes
+    second: Zombie Attack
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,11 +35,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Breakdance Swipes
+      name: Zombie Attack
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 90
+      lastFrame: 139
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -58,7 +58,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.35825545
+        functionName: HitPlayer
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 64aec76600d73fc4ba71a9affc6dae9d, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
