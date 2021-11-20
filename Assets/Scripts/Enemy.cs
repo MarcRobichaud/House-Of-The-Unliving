@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     public void Init()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.enabled = true;
         agent.speed = stats.movementSpeed;
     }
 
@@ -25,4 +26,5 @@ public class Enemy : MonoBehaviour
     {
         agent.destination = PlayerManager.Instance.PlayerPosition;
     }
+
 }

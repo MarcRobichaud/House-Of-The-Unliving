@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LevelManager
 {
@@ -20,18 +22,17 @@ public class LevelManager
 
     private Level level;
 
-    public Vector3 NextCheckPoint => level.NextCheckPoint;
+    public UnityEvent OnCheckPointReached => level.OnCheckPointReached;
     public Vector3 SpawnPoint => level.SpawnPoint.position;
+    public Vector3 CheckPointPosition => level.NextCheckPointPosition;
+    public int CheckPointEnemyNumber => level.NextCheckPointEnemyNumber;
+    public List<Transform> CheckPointSpawners => level.NextCheckPointSpawners;
     public void CheckPointReached() => level.CheckPointReached();
+    public void ChangeCheckPoint() => level.ChangeCheckPoint();
 
     public void Init()
     {
         GenerateLevel();
-    }
-
-    public void Refresh()
-    {
-
     }
 
     private void GenerateLevel()

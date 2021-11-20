@@ -10,24 +10,16 @@ enum PlayerState
 public class Player : MonoBehaviour
 {
     private float timeStarted;
-    private float length = 2;
-    private Rigidbody rb;
+    private float length = 20;
     private PlayerState playerState;
-    private Vector3 destination;
-
-    [Serializable]
-    public struct PlayerStats
-    {
-        public float movementSpeed;
-        public int hp;
-        public int ammo;
-    }
+    private Vector3 movement;
 
     public PlayerStats stats;
 
     public void Init()
     {
-        rb = GetComponent<Rigidbody>();
+        stats.ammo = PlayerManager.MaxAmmo;
+        transform.position = LevelManager.Instance.SpawnPoint;
         StartMoving();
     }
 
@@ -46,20 +38,20 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void StartMoving()
+    public void StartMoving()
     {
-        destination = LevelManager.Instance.NextCheckPoint;
-        destination = transform.right * destination.x + transform.forward * destination.z;
-        rb.velocity = (destination - transform.position).normalized * stats.movementSpeed;
+        movement = LevelManager.Instance.CheckPointPosition;
+        movement -= transform.position;
+        movement = transform.right * movement.x + transform.forward * movement.z;
         playerState = PlayerState.Moving;
     }
 
     private void Move()
     {
-        if (transform.position.x >= LevelManager.Instance.NextCheckPoint.x)
+        transform.position += movement.normalized * stats.movementSpeed * Time.deltaTime;
+        if (transform.position.x >= LevelManager.Instance.CheckPointPosition.x)
         {
             LevelManager.Instance.CheckPointReached();
-            rb.velocity = new Vector3();
             StartShooting();
         }
     }
@@ -72,7 +64,10 @@ public class Player : MonoBehaviour
 
     private void Shooting()
     {
-        if (Time.time > timeStarted + length)
-            StartMoving();
+        if (InputManager.Instance.InputInfos.shoot && stats.ammo > 0)
+        {
+            stats.ammo--;
+            BulletManager.Instance.Shoot(transform.forward);
+        }
     }
 }

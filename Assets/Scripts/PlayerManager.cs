@@ -1,6 +1,14 @@
 using System;
 using UnityEngine;
 
+[Serializable]
+public struct PlayerStats
+{
+    public float movementSpeed;
+    public int hp;
+    public int ammo;
+}
+
 public class PlayerManager
 {
     #region Singleton
@@ -18,9 +26,14 @@ public class PlayerManager
 
     private PlayerManager() { }
     #endregion
+
     private Player player;
 
     public Vector3 PlayerPosition => player.transform.position;
+    public void StartMoving() => player.StartMoving();
+    public PlayerStats Stats => player.stats;
+    public const int MaxAmmo = 5;
+    public const int MaxLife = 5;
 
     public void Init()
     {

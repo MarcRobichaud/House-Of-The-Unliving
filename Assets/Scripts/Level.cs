@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Level : MonoBehaviour
 {
@@ -12,13 +13,16 @@ public class Level : MonoBehaviour
         public List<Transform> spawners;
     }
 
-    public Vector3 NextCheckPoint => checkPoints[currentCheckPoint].transform.position;
+    public Vector3 NextCheckPointPosition => checkPoints[currentCheckPoint].transform.position;
+    public int NextCheckPointEnemyNumber => checkPoints[currentCheckPoint].numbersOfEnemies;
+    public List<Transform> NextCheckPointSpawners => checkPoints[currentCheckPoint].spawners;
+
     public Transform SpawnPoint;
+    public UnityEvent OnCheckPointReached;
 
     [SerializeField]
     private List<CheckPoint> checkPoints;
-
-    int currentCheckPoint = 0;
+    private int currentCheckPoint = 0;
 
     public void Init()
     {
@@ -27,7 +31,12 @@ public class Level : MonoBehaviour
 
     public void CheckPointReached()
     {
-        if (currentCheckPoint < checkPoints.Count)
+        OnCheckPointReached?.Invoke();
+    }
+
+    public void ChangeCheckPoint()
+    {
+        if (currentCheckPoint < checkPoints.Count - 1)
             currentCheckPoint++;
     }
 }
