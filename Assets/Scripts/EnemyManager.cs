@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public enum EnemyType
 {
@@ -37,8 +36,8 @@ public class EnemyManager
 
     private bool SpawnTimerReady => Time.time > timeStarted + spawnInterval;
 
-    private EnemyType GetRandomEnemyType => (EnemyType)UnityEngine.Random.Range(0, 3);
-    private Vector3 GetRandomSpawner => LevelManager.Instance.CheckPointSpawners[UnityEngine.Random.Range(0, LevelManager.Instance.CheckPointSpawners.Count)].position;
+    private EnemyType GetRandomEnemyType => (EnemyType)Random.Range(0, 3);
+    private Vector3 GetRandomSpawner => LevelManager.Instance.CheckPointSpawners[Random.Range(0, LevelManager.Instance.CheckPointSpawners.Count)].position;
 
     public void Init()
     {
@@ -103,5 +102,13 @@ public class EnemyManager
             LevelManager.Instance.ChangeCheckPoint();
             PlayerManager.Instance.MoveToNextCheckPoint();
         }
+    }
+
+    public void Reset()
+    {
+        foreach (var enemy in enemies)
+            GameObject.Destroy(enemy.gameObject);
+
+        enemies.Clear();
     }
 }

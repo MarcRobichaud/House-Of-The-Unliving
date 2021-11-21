@@ -28,6 +28,7 @@ public class UIManager
     RawImage emptyAmmoResource;
     RawImage lifeResource;
     RawImage emptyLifeResource;
+    Button reloadButtonResource;
     RectTransform panelResource;
 
     int UIAmmo;
@@ -38,12 +39,25 @@ public class UIManager
     RectTransform emptyAmmoPanel;
     RectTransform lifePanel;
     RectTransform emptyLifePanel;
+
+    Button reloadButton;
     Button deathScreen;
 
     Vector2 ammoMinAnchor = new Vector2(0.75f, 0.05f);
     Vector2 ammoMaxAnchor = new Vector2(1, 0.15f);
+    Vector2 ammoPivot = new Vector2(1, 0);
+
     Vector2 lifeMinAnchor = new Vector2(0, 0.05f);
     Vector2 lifeMaxAnchor = new Vector2(0.25f, 0.15f);
+    Vector2 lifePivot = Vector2.zero;
+
+    Dictionary<int, Vector2> reloadPositions = new Dictionary<int, Vector2>()
+    { 
+        { 0, new Vector2(0.1f, 0.75f)},
+        { 1, new Vector2(0.1f, 0.25f)},
+        { 2, new Vector2(0.9f, 0.75f)},
+        { 3, new Vector2(0.9f, 0.25f)}
+    };
 
     public void Init()
     {
@@ -53,6 +67,7 @@ public class UIManager
         lifeResource = Resources.Load<GameObject>("Prefabs/UILife").GetComponent<RawImage>();
         emptyLifeResource = Resources.Load<GameObject>("Prefabs/UIEmptyLife").GetComponent<RawImage>();
         panelResource = Resources.Load<GameObject>("Prefabs/UIPanel").GetComponent<RectTransform>();
+        reloadButtonResource = Resources.Load<GameObject>("Prefabs/UIReloadButton").GetComponent<Button>();
 
         InitAmmoUI();
         InitLifeUI();
@@ -71,12 +86,26 @@ public class UIManager
             UILife = PlayerManager.Instance.Stats.hp;
             UpdateUI(UILife, UILives);
         }
+
+        if (PlayerManager.Instance.Stats.ammo < PlayerManager.MaxAmmo && reloadButton == null)
+        {
+            reloadButton = GameObject.Instantiate(reloadButtonResource, canvas.transform);
+            reloadButton.onClick.AddListener(ReloadAmmoClick);
+
+            int randPosKey = Random.Range(0, reloadPositions.Count);
+            RectTransform rectTrans = reloadButton.GetComponent<RectTransform>();
+            if (reloadPositions.TryGetValue(randPosKey, out Vector2 vect2))
+            {
+                rectTrans.anchorMin = vect2;
+                rectTrans.anchorMax = vect2;
+            }
+        }
     }
 
     private void InitAmmoUI()
     {
-        InstantiatePanel(ref ammoPanel, ammoMinAnchor, ammoMaxAnchor);
-        InstantiatePanel(ref emptyAmmoPanel, ammoMinAnchor, ammoMaxAnchor);
+        InstantiatePanel(ref ammoPanel, ammoMinAnchor, ammoMaxAnchor, ammoPivot);
+        InstantiatePanel(ref emptyAmmoPanel, ammoMinAnchor, ammoMaxAnchor, ammoPivot);
 
         UIAmmo = PlayerManager.MaxAmmo;
         for (int i = 0; i < UIAmmo; i++)
@@ -88,8 +117,8 @@ public class UIManager
 
     private void InitLifeUI()
     {
-        InstantiatePanel(ref lifePanel, lifeMinAnchor, lifeMaxAnchor);
-        InstantiatePanel(ref emptyLifePanel, lifeMinAnchor, lifeMaxAnchor);
+        InstantiatePanel(ref lifePanel, lifeMinAnchor, lifeMaxAnchor, lifePivot);
+        InstantiatePanel(ref emptyLifePanel, lifeMinAnchor, lifeMaxAnchor, lifePivot);
 
         UILife = PlayerManager.MaxLife;
         for (int i = 0; i < UILife; i++)
@@ -99,11 +128,12 @@ public class UIManager
         }
     }
 
-    private void InstantiatePanel(ref RectTransform panel, Vector2 minAnchor, Vector2 maxAnchor)
+    private void InstantiatePanel(ref RectTransform panel, Vector2 minAnchor, Vector2 maxAnchor, Vector2 pivot)
     {
         panel = GameObject.Instantiate(panelResource, canvas.transform);
         panel.anchorMin = minAnchor;
         panel.anchorMax = maxAnchor;
+        panel.pivot = pivot;
     }
 
     private void UpdateUI(int value, List<RawImage> list)
@@ -119,6 +149,13 @@ public class UIManager
         }
     }
 
+    private void ReloadAmmoClick()
+    {
+        GameObject.Destroy(reloadButton.gameObject);
+        reloadButton = null;
+        PlayerManager.Instance.AddAmmo();
+    }
+
     public void ActivateDeathScreen()
     {
         deathScreen = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/UIDeathScreen"), canvas.transform).GetComponentInChildren<Button>();
@@ -127,6 +164,9 @@ public class UIManager
 
     private void Restart()
     {
+        EnemyManager.Instance.Reset();
+        UIAmmos.Clear();
+        UILives.Clear();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

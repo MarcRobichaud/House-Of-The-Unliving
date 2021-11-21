@@ -30,9 +30,10 @@ public class PlayerManager
     private Player player;
 
     public Vector3 PlayerPosition => player.transform.position;
+    public PlayerStats Stats => player.stats;
     public void MoveToNextCheckPoint() => player.StartWaiting();
     public void Hit() => player.Hit();
-    public PlayerStats Stats => player.stats;
+    public void AddAmmo() => player.AddAmmo();
     public const int MaxAmmo = 5;
     public const int MaxLife = 5;
 

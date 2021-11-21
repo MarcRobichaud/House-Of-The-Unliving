@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 1
-  m_VerticalFit: 0
+  m_VerticalFit: 2
 --- !u!114 &2668696832627921409
 MonoBehaviour:
   m_ObjectHideFlags: 0

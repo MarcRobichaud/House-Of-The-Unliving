@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MainScript : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
         LevelManager.Instance.Init();
         PlayerManager.Instance.Init();

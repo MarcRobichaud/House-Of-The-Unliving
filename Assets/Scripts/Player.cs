@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     private PlayerState playerState;
     private Vector3 movement;
     private bool isDead = false;
+    private bool isReloading = false;
 
     public PlayerStats stats;
 
@@ -73,11 +74,12 @@ public class Player : MonoBehaviour
 
     private void Shooting()
     {
-        if (InputManager.Instance.InputInfos.shoot && stats.ammo > 0)
+        if (InputManager.Instance.InputInfos.shoot && stats.ammo > 0 && !isReloading)
         {
             stats.ammo--;
             BulletManager.Instance.Shoot(transform.forward);
         }
+        isReloading = false;
     }
 
     public void StartWaiting()
@@ -107,5 +109,12 @@ public class Player : MonoBehaviour
 
         if (stats.hp <= 0)
             playerState = PlayerState.Dead;
+    }
+
+    public void AddAmmo()
+    {
+        isReloading = true;
+        if (stats.ammo < PlayerManager.MaxAmmo)
+            stats.ammo++;
     }
 }
