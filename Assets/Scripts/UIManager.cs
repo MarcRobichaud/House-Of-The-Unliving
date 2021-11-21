@@ -107,12 +107,7 @@ public class UIManager
         InstantiatePanel(ref ammoPanel, ammoMinAnchor, ammoMaxAnchor, ammoPivot);
         InstantiatePanel(ref emptyAmmoPanel, ammoMinAnchor, ammoMaxAnchor, ammoPivot);
 
-        UIAmmo = PlayerManager.MaxAmmo;
-        for (int i = 0; i < UIAmmo; i++)
-        {
-            UIAmmos.Add(GameObject.Instantiate(ammoResource, ammoPanel.transform));
-            GameObject.Instantiate(emptyAmmoResource, emptyAmmoPanel.transform);
-        }
+        InitUI(ref UIAmmo, PlayerManager.MaxAmmo, UIAmmos, ammoResource, ammoPanel, emptyAmmoResource, emptyAmmoPanel);
     }
 
     private void InitLifeUI()
@@ -120,11 +115,16 @@ public class UIManager
         InstantiatePanel(ref lifePanel, lifeMinAnchor, lifeMaxAnchor, lifePivot);
         InstantiatePanel(ref emptyLifePanel, lifeMinAnchor, lifeMaxAnchor, lifePivot);
 
-        UILife = PlayerManager.MaxLife;
-        for (int i = 0; i < UILife; i++)
+        InitUI(ref UILife, PlayerManager.MaxLife, UILives, lifeResource, lifePanel, emptyLifeResource, emptyLifePanel);
+    }
+
+    private void InitUI(ref int content, int maxContent, List<RawImage> list, RawImage resource, RectTransform panel, RawImage emptyResource, RectTransform emptyPanel)
+    {
+        content = maxContent;
+        for (int i = 0; i < content; i++)
         {
-            UILives.Add(GameObject.Instantiate(lifeResource, lifePanel.transform));
-            GameObject.Instantiate(emptyLifeResource, emptyLifePanel.transform);
+            list.Add(GameObject.Instantiate(resource, panel.transform));
+            GameObject.Instantiate(emptyResource, emptyPanel.transform);
         }
     }
 
